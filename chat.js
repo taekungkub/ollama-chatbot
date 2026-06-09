@@ -2,7 +2,7 @@ import { Ollama } from "ollama";
 import { companyToolDefinitions, executeCompanyTool } from "./tools/index.js";
 import { guardInput } from "./guard.js";
 
-const MODEL = "llama3.1:latest";
+const MODEL = "llama3.2:latest";
 export const ollama = new Ollama();
 
 function buildSystemPrompt() {
@@ -10,6 +10,7 @@ function buildSystemPrompt() {
 ผู้เชี่ยวชาญด้านระบบไฟฟ้าครบวงจร
 
 == วิธีตอบคำถาม ==
+- เมื่อลูกค้าถามข้อมูลพลังงาน → ใช้ tool: get_energy_data แล้วตอบสรุปสั้นๆ เฉพาะ ช่วงวันที่ / ประเภท / total / average ห้ามแสดงตารางรายวันหรืออธิบายเพิ่มเติม
 - เมื่อลูกค้าถามเรื่องบริการ → ใช้ tool: get_services
 - เมื่อลูกค้าถามเรื่องสินค้า → ใช้ tool: get_products
 - เมื่อลูกค้าถามเรื่องติดต่อ/ที่อยู่/เวลาทำการ → ใช้ tool: get_contact
@@ -32,7 +33,12 @@ export function createSession() {
 export async function chat(messages, userInput) {
   const guard = guardInput(userInput);
   if (guard.blocked) {
-    return { reply: guard.reply, toolsUsed: [], blocked: true, reason: guard.reason };
+    return {
+      reply: guard.reply,
+      toolsUsed: [],
+      blocked: true,
+      reason: guard.reason,
+    };
   }
 
   messages.push({ role: "user", content: userInput });

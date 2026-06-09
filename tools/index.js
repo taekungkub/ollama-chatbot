@@ -6,12 +6,13 @@ import * as getServices from "./get_services.js";
 import * as getProducts from "./get_products.js";
 import * as getContact from "./get_contact.js";
 import * as getFaq from "./get_faq.js";
+import * as getEnergyData from "./get_energy_data.js";
 
 // tools สำหรับ CLI general chatbot
 const generalTools = [fetchApi, postApi, calculate, getCurrentTime];
 
 // tools สำหรับ company chatbot — เฉพาะข้อมูลบริษัทเท่านั้น
-const companyTools = [getServices, getProducts, getContact, getFaq];
+const companyTools = [getServices, getProducts, getContact, getFaq, getEnergyData];
 
 function buildSet(tools) {
   const definitions = tools.map((t) => t.definition);
